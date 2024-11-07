@@ -10,7 +10,7 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     echo json_encode($row);
 } else {
-    echo json_encode(["Không tìm thấy sản phẩm"]);
+    echo json_encode(["Không thể tìm thấy sản phẩm"]);
 }
 $con->close();
 ?>
