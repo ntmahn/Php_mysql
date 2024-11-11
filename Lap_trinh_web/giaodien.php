@@ -5,7 +5,12 @@
     <title>Danh sách sản phẩm</title>
     <style>
         body {
-           
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h2 {
@@ -89,6 +94,38 @@
             background-color: #0056b3;
             font-weight: bold;
         }
+
+    /* CSS cho phần hiển thị chi tiết sp */
+    #product-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#product-detail-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+#close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    color: #333;
+}
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -104,7 +141,7 @@
 
         function fetchProducts() {
             $.ajax({
-                url: 'laydanhsachsanpham.php',
+                url: 'Lap_trinh_web/laydanhsachsanpham.php',
                 method: 'GET',
                 dataType: 'json',
                 success: function (data) {
@@ -129,11 +166,12 @@
                         <img src="images/${product.hinhanh}" alt="${product.tenhang}">
                         <div class="product-name">${product.tenhang}</div>
                         <div class="product-price">${product.giahang} VND</div>
-                        <button>Hiển thị chi tiết</button>
+                        <button onclick="showProductDetails('${product.mahang}')">Hiển thị chi tiết</button>
                     </div>
                 `);
             });
         }
+
 
         function renderPagination() {
             $('#pagination').empty();
@@ -154,6 +192,47 @@
         $(document).ready(function () {
             fetchProducts();
         });
+
+       // Hiển thị chi tiết sản phẩm trong popup
+       function showProductDetails(mahang) {
+        $.ajax({
+            url: 'Lap_trinh_web/laydanhsachsanpham.php',
+            method: 'GET',
+            dataType: 'json',
+            data: { mahang: mahang }, // Gửi mã hàng để lấy chi tiết
+            success: function (data) {
+                const product = data[0]; // Giả sử dữ liệu trả về là mảng chứa một sản phẩm
+                $('#product-detail-info').html(`
+                    <img src="images/${product.hinhanh}" alt="${product.tenhang}" style="width: 100%; height: auto;">
+                    <h3>${product.tenhang}</h3>
+                    <p>Giá: ${product.giahang} VND</p>
+                    <p>Mã hàng: ${product.mahang}</p>
+                `);
+                $('#product-detail-modal').show(); // Hiển thị modal
+            },
+            error: function () {
+                alert("Lỗi khi tải chi tiết sản phẩm.");
+            }
+        });
+    }
+
+$(document).ready(function () {
+    fetchProducts();
+    $('#close-modal').click(function () {
+        $('#product-detail-modal').hide();
+    });
+});
+
     </script>
+
+<!--Hiện thị chi tiết sản phẩm-->
+<div id="product-detail-modal" style="display: none;">
+    <div id="product-detail-content">
+        <span id="close-modal" style="cursor: pointer;">&times;</span>
+        <div id="product-detail-info"></div>
+    </div>
+</div>
+
+
 </body>
 </html>
