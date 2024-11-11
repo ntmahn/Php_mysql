@@ -5,12 +5,7 @@
     <title>Danh sách sản phẩm</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+           
         }
 
         h2 {
