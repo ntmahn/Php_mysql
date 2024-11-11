@@ -230,6 +230,10 @@ $(document).ready(function () {
     <div id="product-detail-content">
         <span id="close-modal" style="cursor: pointer;">&times;</span>
         <div id="product-detail-info"></div>
+        <!-- Thêm nút "Thanh toán" -->
+        <button id="payment-button" style="background-color: #28a745; color: white; padding: 10px 20px; margin-top: 10px; border: none; border-radius: 5px; cursor: pointer;">
+            Thanh toán
+        </button>
     </div>
 </div>
 
