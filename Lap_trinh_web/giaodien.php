@@ -194,35 +194,45 @@
         });
 
        // Hiển thị chi tiết sản phẩm trong popup
-       function showProductDetails(mahang) {
-        $.ajax({
-            url: 'laydanhsachsanpham.php',
-            method: 'GET',
-            dataType: 'json',
-            data: { mahang: mahang }, // Gửi mã hàng để lấy chi tiết
-            success: function (data) {
-                const product = data[0]; // Giả sử dữ liệu trả về là mảng chứa một sản phẩm
-                $('#product-detail-info').html(`
-                    <img src="images/${product.hinhanh}" alt="${product.tenhang}" style="width: 100%; height: auto;">
-                    <h3>${product.tenhang}</h3>
-                    <p>Giá: ${product.giahang} VND</p>
-                    <p>Mã hàng: ${product.mahang}</p>
-                `);
-                $('#product-detail-modal').show(); // Hiển thị modal
-            },
-            error: function () {
-                alert("Lỗi khi tải chi tiết sản phẩm.");
-            }
-        });
-    }
+       let currentProductID; // Biến để lưu mã sản phẩm hiện tại
+
+function showProductDetails(mahang) {
+    $.ajax({
+        url: 'laydanhsachsanpham.php',
+        method: 'GET',
+        dataType: 'json',
+        data: { mahang: mahang }, // Gửi mã hàng để lấy chi tiết
+        success: function (data) {
+            const product = data[0]; // Giả sử dữ liệu trả về là mảng chứa một sản phẩm
+            $('#product-detail-info').html(`
+                <img src="images/${product.hinhanh}" alt="${product.tenhang}" style="width: 100%; height: auto;">
+                <h3>${product.tenhang}</h3>
+                <p>Giá: ${product.giahang} VND</p>
+                <p>Mã hàng: ${product.mahang}</p>
+            `);
+            currentProductID = mahang; // Lưu mã sản phẩm hiện tại
+            $('#product-detail-modal').show(); // Hiển thị modal
+        },
+        error: function () {
+            alert("Lỗi khi tải chi tiết sản phẩm.");
+        }
+    });
+}
 
 $(document).ready(function () {
     fetchProducts();
+
+    // Đóng modal khi nhấn vào nút "x"
     $('#close-modal').click(function () {
         $('#product-detail-modal').hide();
     });
-});
 
+    // Sự kiện khi nhấn vào nút "Thanh toán"
+    $('#payment-button').click(function () {
+        // Điều hướng đến trang thanhtoan.php với mã sản phẩm
+        window.location.href = `thanhtoan.php?mahang=${currentProductID}`;
+    });
+});
     </script>
 
 <!--Hiện thị chi tiết sản phẩm-->
