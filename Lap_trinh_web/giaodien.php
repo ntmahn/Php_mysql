@@ -141,7 +141,7 @@
 
         function fetchProducts() {
             $.ajax({
-                url: 'Lap_trinh_web/laydanhsachsanpham.php',
+                url: 'laydanhsachsanpham.php',
                 method: 'GET',
                 dataType: 'json',
                 success: function (data) {
@@ -196,7 +196,7 @@
        // Hiển thị chi tiết sản phẩm trong popup
        function showProductDetails(mahang) {
         $.ajax({
-            url: 'Lap_trinh_web/laydanhsachsanpham.php',
+            url: 'laydanhsachsanpham.php',
             method: 'GET',
             dataType: 'json',
             data: { mahang: mahang }, // Gửi mã hàng để lấy chi tiết
