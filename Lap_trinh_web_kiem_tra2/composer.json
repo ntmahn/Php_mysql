@@ -1,0 +1,5 @@
+{
+    "name": "php/web-bds",
+    "description": "php&mysql project for bds list with integrated payment processing using Stripe",
+    "require": {}
+}

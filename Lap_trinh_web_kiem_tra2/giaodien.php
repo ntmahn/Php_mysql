@@ -165,8 +165,9 @@
                     <div class="product">
                         <img src="images/${product.hinhanh}" alt="${product.tenhang}">
                         <div class="product-name">${product.tenhang}</div>
+                        <div class="product-address">${product.diachi}</div>
                         <div class="product-price">${product.giahang} VND</div>
-                        <button onclick="showProductDetails('${product.mahang}')">Hiển thị chi tiết</button>
+                        <button onclick="showProductDetails('${product.mahang}')">Xem chi tiết</button>
                     </div>
                 `);
             });
@@ -250,3 +251,5 @@ $(document).ready(function () {
 
 </body>
 </html>
+
+
