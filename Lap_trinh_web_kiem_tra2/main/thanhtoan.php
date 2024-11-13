@@ -1,58 +1,66 @@
 <?php
-require 'vendor/autoload.php';
+// Include PayPal SDK
+require 'vendor/autoload.php'; // Đảm bảo bạn đã cài đặt SDK PayPal
 
-#http://web_bds.com:2003
+// Thiết lập thông tin API client
+$clientId = 'Adrj3_brb8_r96YcD8WbFHurO-b9QXhamJ2CO6pWyihZ1Ie2QxTrrCOOzjigXHa2LUaZ13YqMySye4JL'; // ClientID
+$clientSecret = 'EKXRcAT1Zbsfw-mgKdcMXYficfJ-zo295h8BVkGWRPMBXZdmjgVr-XtwL3I3aBB_H9Vfg6GPpXgoQltp'; // ClientSecret
 
-\Stripe\Stripe::setApiKey('2003'); 
+// Thiết lập PayPal API Context
+$apiContext = new \PayPal\Rest\ApiContext(
+    new \PayPal\Auth\OAuthTokenCredential($clientId, $clientSecret)
+);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $amount = $_POST['amount'];  // Amount in cents
-    $currency = "vnd";
-    $description = $_POST['description'];
+// Lấy mã sản phẩm từ URL
+$mahang = $_GET['mahang'];
 
-    try {
-        $paymentIntent = \Stripe\PaymentIntent::create([
-            'amount' => $amount,
-            'currency' => $currency,
-            'description' => $description,
-            'payment_method_types' => ['card'],
-        ]);
+// Kết nối cơ sở dữ liệu để lấy thông tin sản phẩm
+include("connect.inp");
+$sql = "SELECT * FROM sanpham WHERE mahang = ?";
+$stmt = $con->prepare($sql);
+$stmt->bind_param("s", $mahang);
+$stmt->execute();
+$result = $stmt->get_result();
 
-        echo json_encode(['clientSecret' => $paymentIntent->client_secret]);
-    } catch (Exception $e) {
-        echo json_encode(['error' => $e->getMessage()]);
-    }
+if ($result->num_rows > 0) {
+    $product = $result->fetch_assoc();
+    $productName = $product['tenhang'];
+    $productPrice = $product['giahang'];
+} else {
+    echo "Sản phẩm không tồn tại.";
+    exit;
+}
+
+// Chuyển đổi giá trị sản phẩm sang định dạng USD (hoặc sử dụng VND nếu cần)
+$amount = number_format($productPrice, 2, '.', '');
+
+// Tạo đối tượng thanh toán (Payment) của PayPal
+$payment = new \PayPal\Api\Payment();
+$payment->setIntent('sale')
+    ->setPayer(new \PayPal\Api\Payer([
+        'payment_method' => 'paypal'
+    ]))
+    ->setTransactions([new \PayPal\Api\Transaction([
+        'amount' => new \PayPal\Api\Amount([
+            'currency' => 'USD',
+            'total' => $amount
+        ]),
+        'description' => $productName
+    ])])
+    ->setRedirectUrls(new \PayPal\Api\RedirectUrls([
+        'return_url' => 'http://localhost/Php_mysql/Lap_trinh_web_kiem_tra2/main/thanhtoan_callback.php?payment_status=success',
+        'cancel_url' => 'http://localhost/Php_mysql/Lap_trinh_web_kiem_tra2/main/thanhtoan_callback.php?payment_status=cancel'
+    ]));
+
+// Gửi yêu cầu thanh toán đến PayPal
+try {
+    $payment->create($apiContext);
+    $approvalUrl = $payment->getApprovalLink(); // Link cho phép người dùng thanh toán
+    header("Location: $approvalUrl");
+    exit;
+} catch (Exception $e) {
+    echo "Lỗi khi tạo thanh toán: " . $e->getMessage();
     exit;
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <title>Thanh toán bất động sản</title>
-    <script src="https://js.stripe.com/v3/"></script>
-</head>
-<body>
-    <button id="checkout-button">Thanh toán với Stripe</button>
-    <script>
-        const stripe = Stripe('your_stripe_publishable_key'); // Add your publishable key
-
-        document.getElementById('checkout-button').addEventListener('click', () => {
-            fetch('thanhtoan.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    amount: 1000000,  // Amount in cents
-                    description: "Thanh toán bất động sản"
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                stripe.redirectToCheckout({
-                    sessionId: data.session_id
-                });
-            });
-        });
-    </script>
-</body>
-</html>
