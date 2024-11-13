@@ -163,7 +163,7 @@
             productsToShow.forEach(product => {
                 $('#product-list').append(`
                     <div class="product">
-                        <img src="images/${product.hinhanh}" alt="${product.tenhang}">
+                        <img src="Image/${product.hinhanh}" alt="${product.tenhang}">
                         <div class="product-name">${product.tenhang}</div>
                         <div class="product-address">${product.diachi}</div>
                         <div class="product-price">${product.giahang} VND</div>
@@ -206,7 +206,7 @@ function showProductDetails(mahang) {
         success: function (data) {
             const product = data[0]; // Giả sử dữ liệu trả về là mảng chứa một sản phẩm
             $('#product-detail-info').html(`
-                <img src="images/${product.hinhanh}" alt="${product.tenhang}" style="width: 100%; height: auto;">
+                <img src="Image/${product.hinhanh}" alt="${product.tenhang}" style="width: 100%; height: auto;">
                 <h3>${product.tenhang}</h3>
                 <p>Giá: ${product.giahang} VND</p>
                 <p>Mã hàng: ${product.mahang}</p>
