@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mahang = $_POST['mahang'];
     $tenhang = $_POST['tenhang'];
     $giahang = $_POST['giahang'];
+    $diachi = $_POST['diachi'];
     $hinhanh = $_FILES['hinhanh']['name'];
 
     // Kiểm tra và di chuyển hình ảnh lên thư mục mong muốn
@@ -15,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (move_uploaded_file($_FILES['hinhanh']['tmp_name'], $targetFile)) {
         // Thực thi câu lệnh SQL để thêm sản phẩm vào cơ sở dữ liệu
-        $sql = "INSERT INTO sanpham (mahang, tenhang, giahang, hinhanh) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO sanpham (mahang, tenhang, giahang, diachi, hinhanh) VALUES (?, ?, ?, ?, ?)";
         if ($stmt = $con->prepare($sql)) {
-            $stmt->bind_param("ssis", $mahang, $tenhang, $giahang, $hinhanh);
+            $stmt->bind_param("ssiss", $mahang, $tenhang, $giahang, $diachi, $hinhanh);
 
             if ($stmt->execute()) {
                 header("Location: giaodien.php");

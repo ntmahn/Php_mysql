@@ -27,7 +27,7 @@ if ($result && $result->num_rows > 0) {
             'mahang' => $row['mahang'],
             'tenhang' => $row['tenhang'], // e.g., "Du an Chung cu Mat troi"
             'giahang' => $row['giahang'], // e.g., "1000000 VND"
-           # 'diachi' => $row['diachi'],   // cot dia chi san pham bds
+            'diachi' => $row['diachi'],   // cot dia chi san pham bds
             'hinhanh' => $row['hinhanh'],
            # 'mota' => $row['mota']        // cot mo ta san pham bds
         ];
