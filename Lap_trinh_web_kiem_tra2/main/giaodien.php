@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Danh sách sản phẩm</title>
+    <title>Danh sách căn hộ</title>
     <style>
          body {
             font-family: Arial, sans-serif;
@@ -308,7 +308,7 @@
         </a>
         <ul>
             <li><a href="#">Trang Chủ</a></li>
-            <li><a href="giaodien.php">Sản phẩm</a></li>
+            <li><a href="giaodien.php">Căn hộ</a></li>
             <li><a href="#">Giới Thiệu</a></li>
             <li><a href="#">Liên Hệ</a></li>
             <li><a href="#">Tuyển dụng</a></li>
@@ -318,7 +318,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <h2>Danh sách sản phẩm</h2>
+        <h2>Danh sách căn hộ</h2>
         <div id="product-list"></div>
         <div id="pagination"></div>
     </div>
