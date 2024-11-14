@@ -41,7 +41,7 @@
         }
 
         .navbar .logo img {
-            height: 40px;
+            height: 20px;
             width: auto;
         }
 
@@ -284,14 +284,14 @@
             }
         }
         .navbar.shrink {
-    background-color: black;
-    padding: 10px;
-    transition: background-color 0.3s, padding 0.3s;
+                background-color: black;
+                padding: 10px;
+                transition: background-color 0.3s, padding 0.3s;
         }
         
-    .footer-column.social-media a {
-        display: block;
-        margin-bottom: 5px; /* Khoảng cách giữa các icon */
+        .footer-column.social-media a {
+                display: block;
+                margin-bottom: 5px; /* Khoảng cách giữa các icon */
         }
 </style>
 
@@ -304,7 +304,7 @@
     <!-- Navbar -->
     <div class="navbar">
         <a class="navbar-brand" href="giaodien.php">
-            <img src="Image/logo.png" width="90px" height="90px" alt="logo">
+            <img src="Image/logo.jfif" width="30px" height="30px" alt="logo">
         </a>
         <ul>
             <li><a href="#">Trang Chủ</a></li>
@@ -338,7 +338,7 @@
             <div class="footer-column social-media">
 				<h4>Theo dõi</h4>
 				<a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
-				<a href="#"><img src="youtube-icon.png" alt="YouTube"></a>x
+				<a href="#"><img src="youtube-icon.png" alt="YouTube"></a>
 				<a href="#"><img src="tiktok-icon.png" alt="TikTok"></a>
 		    </div>
         </div>
