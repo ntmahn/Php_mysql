@@ -444,7 +444,7 @@
                         $('#product-detail-info').html(`
                             <img src="Image/${product.hinhanh}" alt="${product.tenhang}" style="width: 100%; height: auto;">
                             <h3>${product.tenhang}</h3>
-                            <p>Giá: ${product.giahang} VND</p>
+                            <p>Giá: ${product.giahang} USD</p>
                             <p>Mã hàng: ${product.mahang}</p>
                             <p>Địa chỉ: ${product.diachi}</p>
                         `);
