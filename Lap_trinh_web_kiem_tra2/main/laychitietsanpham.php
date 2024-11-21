@@ -2,7 +2,7 @@
 header("Content-Type: application/json");
 include("connect.inp");
 
-$masp = $_GET["mahang"];
+$masp = $_GET['mahang'];
 $sql = "SELECT * FROM sanpham WHERE mahang='$masp'";
 $result = $con->query($sql);
 

@@ -1,10 +1,10 @@
 <?php
-// Hiển thị thông báo khi người dùng quay lại từ PayPal
+
 if (isset($_GET['payment_status'])) {
     $status = $_GET['payment_status'];
     if ($status == 'success') {
         // Thanh toán thành công
-        echo "<script>alert('Thanh toán thành công!');</script>";
+        echo "<script>alert('Thanh toán thành công! Cảm ơn quý khách!');</script>";
     } elseif ($status == 'cancel') {
         // Thanh toán bị hủy
         echo "<script>alert('Thanh toán bị hủy.');</script>";
@@ -12,6 +12,11 @@ if (isset($_GET['payment_status'])) {
         // Lỗi thanh toán
         echo "<script>alert('Đã xảy ra lỗi khi thanh toán.');</script>";
     }
+
+    
+    echo "<script>setTimeout(function() {
+        window.location.href = 'index.php';
+    }, 3000);</script>";
 }
 ?>
 
@@ -44,11 +49,11 @@ if (isset($_GET['payment_status'])) {
     
     <!-- Hiển thị thông báo thanh toán -->
     <div id="payment-status" class="alert">
-        <!-- Thông báo sẽ được thêm vào ở đây thông qua JavaScript -->
+       
     </div>
 
     <script>
-        // JavaScript để hiển thị thông báo
+        
         <?php if (isset($_GET['payment_status'])): ?>
             var status = "<?php echo $_GET['payment_status']; ?>";
             var message = "";

@@ -11,27 +11,22 @@ $apiContext = new \PayPal\Rest\ApiContext(
     new \PayPal\Auth\OAuthTokenCredential($clientId, $clientSecret)
 );
 
-// Lấy mã sản phẩm từ URL
-$mahang = $_GET['mahang'];
-
-// Kết nối cơ sở dữ liệu để lấy thông tin sản phẩm
+// Kết nối cơ sở dữ liệu để lấy danh sách sản phẩm
 include("connect.inp");
-$sql = "SELECT * FROM sanpham WHERE mahang = ?";
-$stmt = $con->prepare($sql);
-$stmt->bind_param("s", $mahang);
-$stmt->execute();
-$result = $stmt->get_result();
+
+$sql = "SELECT * FROM sanpham LIMIT 1";
+$result = $con->query($sql);
 
 if ($result->num_rows > 0) {
     $product = $result->fetch_assoc();
     $productName = $product['tenhang'];
     $productPrice = $product['giahang'];
 } else {
-    echo "Sản phẩm không tồn tại.";
+    echo "Không có sản phẩm nào trong cơ sở dữ liệu.";
     exit;
 }
 
-// Chuyển đổi giá trị sản phẩm sang định dạng USD (hoặc sử dụng VND nếu cần)
+// Chuyển đổi giá trị sản phẩm sang định dạng USD 
 $amount = number_format($productPrice, 2, '.', '');
 
 // Tạo đối tượng thanh toán (Payment) của PayPal
@@ -46,7 +41,7 @@ $payment->setIntent('sale')
             'total' => $amount
         ]),
         'description' => $productName
-    ])])
+    ])]) 
     ->setRedirectUrls(new \PayPal\Api\RedirectUrls([
         'return_url' => 'http://localhost/Php_mysql/Lap_trinh_web_kiem_tra2/main/thanhtoan_callback.php?payment_status=success',
         'cancel_url' => 'http://localhost/Php_mysql/Lap_trinh_web_kiem_tra2/main/thanhtoan_callback.php?payment_status=cancel'
@@ -55,7 +50,7 @@ $payment->setIntent('sale')
 // Gửi yêu cầu thanh toán đến PayPal
 try {
     $payment->create($apiContext);
-    $approvalUrl = $payment->getApprovalLink(); // Link cho phép người dùng thanh toán
+    $approvalUrl = $payment->getApprovalLink(); 
     header("Location: $approvalUrl");
     exit;
 } catch (Exception $e) {
@@ -63,4 +58,3 @@ try {
     exit;
 }
 ?>
-
